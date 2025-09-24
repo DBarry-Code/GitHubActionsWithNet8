@@ -1,29 +1,28 @@
 name: .NET CI
-
 on:
 push:
-branches: [main, master]
+branches:
+- main
+- master
 pull_request:
-branches: [main, master]
-workflow_dispatch:
+branches:
+- main
+- master
+workflow_dispatch: {}
 
 jobs:
 build:
 runs-on: ubuntu-latest
-env:
-DOTNET_CLI_TELEMETRY_OPTOUT: 1
-DOTNET_NOLOGO: 1
 steps:
-- name: Checkout
+- name: Checkout code
 uses: actions/checkout@v4
-- name: Setup .NET
+- name: Setup .NET SDK
 uses: actions/setup-dotnet@v3
 with:
-dotnet-version: 9.0.x
-cache: true
-- name: Restore
+dotnet-version: '9.0.x'
+- name: Restore dependencies
 run: dotnet restore
-- name: Build
+- name: Build the application
 run: dotnet build --configuration Release --no-restore
-- name: Test
+- name: Run tests
 run: dotnet test --configuration Release --no-build --verbosity normal
